@@ -1,0 +1,8 @@
+1- Understand the folder structure and try to use Relative Paths not Absolute paths,
+I uses Absolute path because relative path was giving errors for now.
+
+2- Try to remove unnecessary __init__.py files or use them to create relative paths.
+
+3- Run agent in a loop and maintain context via user_input.
+
+4- use model:gpt-40-mini for all agents.
