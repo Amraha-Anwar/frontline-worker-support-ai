@@ -1,0 +1,19 @@
+[project]
+name = "frontline-worker-support-ai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "codeWithHak", email = "huzairahmedkhan@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "openai-agents>=0.3.3",
+]
+
+[project.scripts]
+frontline-worker-support-ai = "frontline_worker_support_ai:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
