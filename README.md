@@ -38,7 +38,7 @@ With *AI Powered agents*, we can:
 
 ## 🏗️ System Architecture
 
-<img width="849" height="651" alt="image" src="/architecture.jpeg" />
+<img width="849" height="651" alt="image" src="/server/architecture.jpeg" />
 
 
 ---
