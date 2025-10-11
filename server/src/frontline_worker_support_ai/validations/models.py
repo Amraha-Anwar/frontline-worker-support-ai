@@ -16,3 +16,5 @@ class AnalysisOutputSchema(BaseModel):
     timestamp: str
     urgency: Literal["urgent", "critical"]
     citizen_profile: CitizenProfileSchema
+
+    

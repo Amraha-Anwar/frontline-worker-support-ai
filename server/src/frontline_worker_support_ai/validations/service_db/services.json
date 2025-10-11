@@ -1,0 +1,174 @@
+{
+  "health": [
+    {
+      "id": "h001",
+      "name": "Aga Khan University Hospital",
+      "type": "hospital",
+      "contact": {
+        "emergency": "021-111-911-911",
+        "reception": "021-3486-4333",
+        "ambulance": "021-3486-4000"
+      },
+      "location": {
+        "address": "Stadium Road, P.O. Box 3500",
+        "city": "Karachi",
+        "state": "Sindh",
+        "country": "Pakistan",
+        "coordinates": {
+          "lat": 24.8851,
+          "lng": 67.0726
+        }
+      },
+      "services": [
+        "emergency",
+        "trauma",
+        "general_medicine",
+        "ambulance",
+        "specialized_care"
+      ],
+      "hours": "24/7"
+    },
+    {
+      "id": "h002",
+      "name": "Jinnah Postgraduate Medical Centre (JPMC)",
+      "type": "hospital",
+      "contact": {
+        "main": "021-9920-1300",
+        "emergency": "021-9920-1352",
+        "ambulance": "021-9920-1351"
+      },
+      "location": {
+        "address": "Rafiqui Shaheed Road",
+        "city": "Karachi",
+        "state": "Sindh",
+        "country": "Pakistan",
+        "coordinates": {
+          "lat": 24.8741,
+          "lng": 67.0305
+        }
+      },
+      "services": [
+        "emergency",
+        "trauma_center",
+        "general_medicine",
+        "specialized_care",
+        "teaching_hospital"
+      ],
+      "hours": "24/7"
+    }
+  ],
+  "police": [
+    {
+      "id": "p001",
+      "name": "Madadgar 15 Police",
+      "type": "police_headquarters",
+      "contact": {
+        "emergency": "15",
+        "helpline": "021-99216690",
+        "dispatch": "021-99216330"
+      },
+      "location": {
+        "address": "I.I. Chundrigar Road",
+        "city": "Karachi",
+        "state": "Sindh",
+        "country": "Pakistan",
+        "coordinates": {
+          "lat": 24.8545,
+          "lng": 67.0106
+        }
+      },
+      "services": [
+        "emergency_response",
+        "criminal_investigation",
+        "traffic_enforcement",
+        "citizen_support"
+      ],
+      "hours": "24/7"
+    },
+    {
+      "id": "p002",
+      "name": "Clifton Police Station",
+      "type": "police_station",
+      "contact": {
+        "office": "021-99250081",
+        "emergency": "15",
+        "desk_officer": "021-99250082"
+      },
+      "location": {
+        "address": "Block 5 Clifton",
+        "city": "Karachi",
+        "state": "Sindh",
+        "country": "Pakistan",
+        "coordinates": {
+          "lat": 24.8308,
+          "lng": 67.0343
+        }
+      },
+      "services": [
+        "community_policing",
+        "report_filing",
+        "patrol",
+        "investigation",
+        "emergency_response"
+      ],
+      "hours": "24/7"
+    }
+  ],
+  "sanitation": [
+    {
+      "id": "s001",
+      "name": "Sindh Solid Waste Management Board",
+      "type": "waste_management",
+      "contact": {
+        "main": "021-99333704",
+        "complaint": "1128",
+        "emergency": "021-99333703"
+      },
+      "location": {
+        "address": "Bungalow No D-47, Block 2 Clifton",
+        "city": "Karachi",
+        "state": "Sindh",
+        "country": "Pakistan",
+        "coordinates": {
+          "lat": 24.8419,
+          "lng": 67.0273
+        }
+      },
+      "services": [
+        "waste_collection",
+        "garbage_disposal",
+        "street_cleaning",
+        "hazardous_waste_management"
+      ],
+      "hours": "8:00 AM - 5:00 PM"
+    },
+    {
+      "id": "s002",
+      "name": "District Municipal Corporation (DMC) South",
+      "type": "municipal_services",
+      "contact": {
+        "office": "021-99205645",
+        "complaints": "021-99205646",
+        "emergency": "021-99205647"
+      },
+      "location": {
+        "address": "KMC Building, M.A. Jinnah Road",
+        "city": "Karachi",
+        "state": "Sindh",
+        "country": "Pakistan",
+        "coordinates": {
+          "lat": 24.8608,
+          "lng": 67.0104
+        }
+      },
+      "services": [
+        "street_cleaning",
+        "pest_control",
+        "sewerage_maintenance",
+        "public_health",
+        "environmental_protection"
+      ],
+      "hours": "9:00 AM - 5:00 PM"
+    }
+  ]
+}

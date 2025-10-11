@@ -2,7 +2,6 @@
 name = "frontline-worker-support-ai"
 version = "0.1.0"
 description = "Add your description here"
-readme = "README.md"
 authors = [
     { name = "codeWithHak", email = "huzairahmedkhan@gmail.com" }
 ]
