@@ -83,9 +83,11 @@ async def main():
 
     while True:
         user_input = input("\nYou: ")
-        if user_input.lower() in ["exit", "quit" , "bye" , "goodbye"]:
+        if user_input.lower() in ["exit", "quit", "bye", "goodbye"]:
             print("Conversation ended.")
+            await session.close()
             break
+
 
         # Send input to the agent and keep chat context in session
         result = await Runner.run(
