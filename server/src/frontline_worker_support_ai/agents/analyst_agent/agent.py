@@ -18,21 +18,13 @@ from frontline_worker_support_ai.agents import guidance_agent
 from frontline_worker_support_ai.agents.analyst_agent.instructions import INSTRUCTIONS
 from frontline_worker_support_ai.agents.guidance_agent.agent import guidance_agent
 
+
+
+
 # Load environment variables
 load_dotenv()
 
-# Set up Gemini client and model
-client = AsyncOpenAI(
-    api_key=os.getenv("GEMINI_API_KEY"),
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
-)
 
-model = OpenAIChatCompletionsModel(
-    openai_client=client,
-    model="gemini-2.0-flash",
-)
-
-config = RunConfig(model=model)
 
 # Define the data model for a case
 class CaseData(BaseModel):
@@ -73,12 +65,13 @@ analyst_agent = Agent(
     tools=[ save_case_tool],
 )
 
+
 # Main function to start the chat
 async def main():
     print("\n=== Frontline Worker Support AI | Analyst Agent ===")
     print("Analyst Agent: Hello! How can I help you today?")
 
-    # Create or connect to SQLite memory database
+    # SQLite memory database
     session = SQLiteSession(session_id="citizen_chat_001", db_path="chat_memory.db")
 
     while True:
