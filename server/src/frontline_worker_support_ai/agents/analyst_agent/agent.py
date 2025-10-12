@@ -86,7 +86,6 @@ async def main():
         result = await Runner.run(
             starting_agent=analyst_agent,
             input=user_input,
-            run_config=config,
             session=session,
         )
 
