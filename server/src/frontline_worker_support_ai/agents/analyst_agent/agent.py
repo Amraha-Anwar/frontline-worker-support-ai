@@ -1,8 +1,6 @@
 import asyncio
 import json
 import os
-import uuid
-from datetime import datetime
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
@@ -14,7 +12,7 @@ from agents import (
     OpenAIChatCompletionsModel,
     RunConfig,
 )
-from agents.memory.sqlite_session import SQLiteSession
+from agents.memory.sqlite_session import SQLiteSession # pyright: ignore[reportMissingImports]
 
 from frontline_worker_support_ai.agents import guidance_agent
 from frontline_worker_support_ai.agents.analyst_agent.instructions import INSTRUCTIONS
