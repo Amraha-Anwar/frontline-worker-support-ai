@@ -1,92 +1,103 @@
+import asyncio
 import json
+import os
 import uuid
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
-from typing import Literal, Optional
+from dotenv import load_dotenv
+from pydantic import BaseModel
 
-class CitizenProfile(BaseModel):
-    full_name: str
-    location: str
-    email: Optional[EmailStr] = None
-    phone: Optional[str] = None
+from agents import (
+    function_tool,
+    Agent,
+    Runner,
+    AsyncOpenAI,
+    OpenAIChatCompletionsModel,
+    RunConfig,
+)
+from agents.memory.sqlite_session import SQLiteSession
 
+from frontline_worker_support_ai.agents import guidance_agent
+from frontline_worker_support_ai.agents.analyst_agent.instructions import INSTRUCTIONS
+from frontline_worker_support_ai.agents.guidance_agent.agent import guidance_agent
 
+# Load environment variables
+load_dotenv()
 
-class AnalysisOutputSchema(BaseModel):
+# Set up Gemini client and model
+client = AsyncOpenAI(
+    api_key=os.getenv("GEMINI_API_KEY"),
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+)
+
+model = OpenAIChatCompletionsModel(
+    openai_client=client,
+    model="gemini-2.0-flash",
+)
+
+config = RunConfig(model=model)
+
+# Define the data model for a case
+class CaseData(BaseModel):
     case_id: str
-    request_text: str
-    request_type: Literal["emergency_medical", "crime_report", "general_support"]
+    citizen_name: str
+    issue_type: str
+    urgency: str
+    details: str
+    location: str
+    contact: str
     timestamp: str
-    urgency: Literal["urgent", "critical"]
-    citizen_profile: CitizenProfile
-    needs_more_info: bool = False
 
 
 
-def classify_request(request_text: str) -> tuple[str, str]:
-    text = request_text.lower()
-    if any(word in text for word in ["heart attack", "accident", "injury", "unconscious"]):
-        return "emergency_medical", "critical"
-    elif any(word in text for word in ["chori", "theft", "robbery", "fight", "murder"]):
-        return "crime_report", "urgent"
-    else:
-        return "general_support", "urgent"
-
-
-
-def save_case(data: dict):
+# Tool to save user case data
+@function_tool
+def save_case_tool(case: CaseData) -> str:
+    """Save the case information in a JSON file."""
     try:
         with open("cases.json", "r", encoding="utf-8") as f:
-            all_cases = json.load(f)
+            data = json.load(f)
     except FileNotFoundError:
-        all_cases = []
-    all_cases.append(data)
+        data = []
+
+    data.append(case.dict())
     with open("cases.json", "w", encoding="utf-8") as f:
-        json.dump(all_cases, f, indent=2, ensure_ascii=False)
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+    return f"Case saved successfully! Total cases: {len(data)}"
 
 
 
-def main():
+# Create the Analyst Agent
+analyst_agent = Agent(
+    name="Analyst Agent",
+    instructions= INSTRUCTIONS,
+    handoffs=[guidance_agent],
+    tools=[ save_case_tool],
+)
+
+# Main function to start the chat
+async def main():
     print("\n=== Frontline Worker Support AI | Analyst Agent ===")
-    print("Hello! I'm here to assist you. Please describe your issue below.\n")
-    user_issue = input("You: ")
-    request_type, urgency = classify_request(user_issue)
-    location = ""
+    print("Analyst Agent: Hello! How can I help you today?")
 
-    while not location.strip():
-        print("Agent: Can you provide your exact location or address?")
-        location = input("You: ").strip()
-    contact = ""
+    # Create or connect to SQLite memory database
+    session = SQLiteSession(session_id="citizen_chat_001", db_path="chat_memory.db")
 
-    while not contact.strip():
-        print("Agent: Please provide your phone number or email so we can contact you.")
-        contact = input("You: ").strip()
-    email = contact if "@" in contact else None
-    phone = contact if "@" not in contact else None
-    full_name = input("Agent: Please provide your full name: ").strip()
-    
-    if not full_name:
-        full_name = "Anonymous"
-    final_output = AnalysisOutputSchema(
-        case_id=str(uuid.uuid4()),
-        request_text=user_issue,
-        request_type=request_type,
-        timestamp=datetime.now().isoformat(),
-        urgency=urgency,
-        citizen_profile=CitizenProfile(
-            full_name=full_name,
-            location=location,
-            email=email,
-            phone=phone,
-        ),
-        needs_more_info=False,
-    )
-    save_case(final_output.model_dump())
+    while True:
+        user_input = input("\nYou: ")
+        if user_input.lower() in ["exit", "quit" , "bye" , "goodbye"]:
+            print("Conversation ended.")
+            break
 
+        # Send input to the agent and keep chat context in session
+        result = await Runner.run(
+            starting_agent=analyst_agent,
+            input=user_input,
+            run_config=config,
+            session=session,
+        )
 
-    print("\n=== Data Collection Complete ===")
-    print(json.dumps(final_output.model_dump(), indent=2, ensure_ascii=False))
-   
+        print(f"\nAnalyst Agent: {result.final_output}")
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
